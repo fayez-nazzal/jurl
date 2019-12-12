@@ -9,6 +9,5 @@
 #define MODERN_YELLOW  5
 WINDOW *main_window;
 WINDOW *command_window;
-int row, col;
-void delay(float seconds);
+int number_of_rows, number_of_cols;
 #endif

@@ -5,17 +5,30 @@
 #include "dirs.h"
 #include "command_window.h"
 #include "input.h"
+#include "date_time.h"
 
 void init_command_window() {
-  command_row = row/4 + row/2;
+  command_window = newwin(number_of_rows, number_of_cols, 0, 0);
+  keypad(command_window, TRUE);
+  command_row = number_of_rows/4 + number_of_rows/2;
+  command_col = number_of_cols/4;
+}
+
+void show_command_window() {
+  //attron(COLOR_PAIR(1));
+  //print_border(command_window, number_of_rows, col);
+  //print_title(command_window, col, "Command Window");
+  //attroff(COLOR_PAIR(1));
+  wrefresh(command_window);
 }
 
 void command_window_show_directories() {
   /* draw directories window */
-  const int first_col = col/4;
-  const int first_row = row/4;
-  const int max_col = col/2 + col/4;
-  const int max_row = row/2 + row/4;
+  get_directories();
+  const int first_col = number_of_cols/4;
+  const int first_row = number_of_rows/4;
+  const int max_col = number_of_cols/2 + number_of_cols/4;
+  const int max_row = number_of_rows/2 + number_of_rows/4;
   for (int i=first_col; i<max_col; i++)
   {
     for (int j=first_row; j< max_row; j++)
@@ -70,9 +83,9 @@ void update_dir_window() {
   wrefresh(command_window);
   MEVENT mouse_event;
   bool pressed_mouse = false;
-  char *s = mvwget_input_string_with_mouse(command_window, command_row, col/4, &mouse_event, &pressed_mouse, true);
-
+  char *string = mvwget_input_string_with_mouse(command_window, command_row, command_col, &mouse_event, &pressed_mouse, true);
   wrefresh(command_window);
+  free_last_input_string();
 }
 
 void update_dirs_mouse_input(MEVENT *mouse_event, bool pressed_mouse) {
@@ -82,7 +95,7 @@ void update_dirs_mouse_input(MEVENT *mouse_event, bool pressed_mouse) {
      {
        wattron(command_window, COLOR_PAIR(1));
        mvwprintw(command_window, directories[i].dir_row, directories[i].dir_col_from, "%s", directories[i].dir_name);
-       wmove(command_window, command_row, col/4);
+       wmove(command_window, command_row, command_col);
        wattroff(command_window,COLOR_PAIR(1));
        delay(0.01f);
        wrefresh(command_window);
@@ -91,8 +104,30 @@ void update_dirs_mouse_input(MEVENT *mouse_event, bool pressed_mouse) {
      {
        wattron(command_window,COLOR_PAIR(2));
        mvwprintw(command_window, directories[i].dir_row, directories[i].dir_col_from, "%s", directories[i].dir_name);
-       wmove(command_window, command_row, col/4);
+       wmove(command_window, command_row, command_col);
        wattroff(command_window,COLOR_PAIR(2));
       wrefresh(command_window);
      }
+}
+
+
+void print_border() {
+  mvwaddch(command_window, 0,0,'+');
+  mvwaddch(command_window, number_of_rows-1,0,'+');
+  mvwaddch(command_window,0, number_of_cols-1,'+');
+  mvwaddch(command_window, number_of_rows-1,number_of_cols-1,'+');
+  for (int i=1, j=number_of_rows-2; i<number_of_rows-1 && j>0; i++, j--)
+  {
+    mvwaddch(command_window,i,0,'|');
+    mvwaddch(command_window,j,number_of_cols-1,'|');
+  }
+  for (int i=1, j=number_of_cols-2; i<number_of_cols-1 && j>0; i++, j--)
+  {
+    mvwaddch(command_window,0,i,'-');
+    mvwaddch(command_window,number_of_rows-1,j,'-');
+  }
+}
+
+void print_title (char* title) {
+  mvwprintw(command_window, 1, number_of_cols/2-strlen(title)/2, title);
 }
