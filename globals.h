@@ -2,6 +2,7 @@
 #define GLOBALS_H
 
 #include <ncurses.h>
+
 #define MODERN_WHITE  1
 #define MODERN_BLACK  2
 #define GREY_WHITE  3

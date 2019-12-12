@@ -13,12 +13,13 @@ void free_last_input_string() {
 }
 
 char* mvwget_input_string_with_mouse(WINDOW *win, const int irow, const int icol, MEVENT *mouse_event, bool *pressed_mouse, bool process_dirs) {
-  int current_col=icol;
+  current_input_col=icol;
   start_reporting_mouse();
-  int c = mvwgetch(win, irow, current_col);
-  input_string = calloc(200 , sizeof(char));
+  short c = mvwgetch(win, irow, current_input_col);
+  short max_input_string_length = max_col - command_col;
+  input_string = calloc(max_input_string_length , sizeof(char));
   char *string_builder = input_string;
-  while (c!='\n'&&current_col!=icol+30) {
+  while (c!='\n'&&current_input_col!=icol+max_input_string_length) {
       if (c == KEY_MOUSE) {
         if (getmouse(mouse_event) == OK) {
           if (((*mouse_event).bstate & BUTTON1_CLICKED)||((*mouse_event).bstate & BUTTON1_PRESSED)||((*mouse_event).bstate & BUTTON1_RELEASED))
@@ -31,24 +32,24 @@ char* mvwget_input_string_with_mouse(WINDOW *win, const int irow, const int icol
     }
     if ((c==KEY_BACKSPACE||c==127))
     {
-      if (current_col==icol)
+      if (current_input_col==icol)
       {
         c = wgetch(win);
         continue;
       }
       string_builder--;
-      current_col--;
-      mvwdelch(win, irow, current_col);
+      current_input_col--;
+      mvwdelch(win, irow, current_input_col);
       wrefresh(win);
     }
-    else if (isalpha(c)||c=='-'||c=='.')
+    else if (isalpha(c)||c==' '||c=='-'||c=='.'||c=='!'||c==',')
     {
       waddch(win, c);
       *string_builder++ = c;
-      current_col++;
+      current_input_col++;
     }
     wrefresh(win);
-    c = mvwgetch(win, irow, current_col);
+    c = mvwgetch(win, irow, current_input_col);
   }
   stop_reporting_mouse();
   *(++string_builder)='\0';
