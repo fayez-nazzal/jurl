@@ -50,8 +50,7 @@ int main()
     move(0, 0);
   }
 
-  printf("\033[?1003l\n"); // Disable mouse movement events, as l = low
-
+  printf("\033[?1003l\n");
   endwin();
 
   return 0;

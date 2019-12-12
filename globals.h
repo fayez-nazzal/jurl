@@ -10,5 +10,5 @@
 WINDOW *main_window;
 WINDOW *command_window;
 int row, col;
-
+void delay(float seconds);
 #endif

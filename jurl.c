@@ -9,6 +9,8 @@
 #include "dirs.h"
 #include "command_window.h"
 #include "input.h"
+
+// TODO make program not work with very small size terminals
 int main()
 {
   /* print the title */
@@ -21,6 +23,7 @@ int main()
  main_window = newwin(row, col, 0, 0);
  keypad(main_window, TRUE);
  command_window = newwin(row, col, 0, 0);
+ init_command_window();
  keypad(command_window, TRUE);
  refresh();
  if (has_colors() == FALSE || !can_change_color())
@@ -56,24 +59,16 @@ int main()
  return 0;
 }
 
-void delay(int seconds) {
-  int time = CLOCKS_PER_SEC * seconds;
-
-  clock_t start_time = clock();
-  while (clock() < start_time + time )
-   ;
-}
-
-void readfile (FILE *fp, char *fi) {
-  while ((*fi++=getc(fp))!=EOF);
-}
-
 void show_command_window() {
   //attron(COLOR_PAIR(1));
   //print_border(command_window, row, col);
   //print_title(command_window, col, "Command Window");
   //attroff(COLOR_PAIR(1));
   wrefresh(command_window);
+}
+
+void readfile (FILE *fp, char *fi) {
+  while ((*fi++=getc(fp))!=EOF);
 }
 
 void print_border(WINDOW *win, int num_rows, int num_columns) {

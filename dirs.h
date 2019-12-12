@@ -3,7 +3,6 @@
 
 struct directory_text {
   char *dir_name;
-  bool highlited;
   int dir_row;
   int dir_col_from;
   int dir_col_to;
