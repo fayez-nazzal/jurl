@@ -9,11 +9,12 @@
 
 void init_command_window() {
     command_window = newwin(number_of_rows, number_of_cols, 0, 0);
+    max_col = number_of_cols / 2 + number_of_cols/8;
+    max_row = number_of_rows / 2 + (number_of_rows/8);
+    command_row = max_row;
+    command_col = 5;
     keypad(command_window, TRUE);
-    command_row = number_of_rows / 4 - 1;
-    command_col = number_of_cols / 4;
-    max_col = number_of_cols / 2 + number_of_cols / 4;
-    max_row = number_of_rows / 2 + number_of_rows / 4;
+    wrefresh(command_window);
 }
 
 void show_command_window() {
@@ -27,15 +28,14 @@ void show_command_window() {
 void command_window_show_directories() {
     /* draw directories window */
     get_directories();
-    const int first_col = number_of_cols / 4;
-    const int first_row = number_of_rows / 4;
+    const int first_col = 5;
+    const int first_row = 3;
     for (int i = first_col; i < max_col; i++) {
         for (int j = first_row; j < max_row; j++)
             mvwaddch(command_window, j, i, ' ' | COLOR_PAIR(2));
     }
     int current_row = first_row, current_col = first_col;
     int dir_col_f;
-    bool row_inc_flag = false;
     for (int i = 0; i < number_of_dirs; i++) {
         char *dir_name_nspace = directories[i].dir_name;
         char *dir_name;
@@ -45,8 +45,6 @@ void command_window_show_directories() {
             dir_col_f = first_col;
             current_row += 1;
             dir_name = dir_name_nspace;
-            if (!row_inc_flag)
-                row_inc_flag = true;
         } else {
             dir_name = calloc(dir_length + 2, sizeof(char));
             if (current_col != first_col) {
@@ -63,10 +61,8 @@ void command_window_show_directories() {
             dir_name++;
         }
         directories[i].dir_col_to = current_col - 1;
-        if (!row_inc_flag)
-            directories[i].dir_row = current_row;
-        else
-            directories[i].dir_row = current_row;
+        directories[i].dir_row = current_row;
+
     }
     update_dir_window();
 }

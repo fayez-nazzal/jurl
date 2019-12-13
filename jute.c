@@ -17,7 +17,7 @@ int main() {
     raw();
     noecho();
     getmaxyx(stdscr, number_of_rows, number_of_cols);
-    while (number_of_cols<66||number_of_rows<20) {
+    while (number_of_cols<56||number_of_rows<16) {
         mvwprintw(stdscr, 0, 0, "Your terminal size is very small, please resize it");
         refresh();
         delay(0.1f);
