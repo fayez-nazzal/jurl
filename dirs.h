@@ -1,16 +1,16 @@
 #ifndef DIRS_H
 #define DIRS_H
 
-struct directory_text {
+typedef struct _dir_text dir_text;
+struct _dir_text {
     char *dir_name;
     int dir_row;
     int dir_col_from;
     int dir_col_to;
-};
-struct directory_text *directories;
+} *directories;
 int number_of_dirs;
 
-void get_directories();
+void get_directories(char* dirname);
 
 void delete_source_dirs();
 

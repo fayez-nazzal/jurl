@@ -7,14 +7,14 @@
 
 bool is_directories_allocated = false;
 
-void get_directories() {
+void get_directories(char* dirname) {
     if (is_directories_allocated)
         free(directories);
-    directories = calloc(100, sizeof(struct directory_text));
+    directories = calloc(100, sizeof(dir_text));
     is_directories_allocated = true;
     DIR *d;
     struct dirent *dir;
-    d = opendir(".");
+    d = opendir(dirname);
     number_of_dirs = 0;
     if (d) {
         while ((dir = readdir(d)) != NULL) {
@@ -37,13 +37,15 @@ void delete_source_dirs() {
     for (int i = 0; i < number_of_dirs; i++) {
         char *dir_name = directories[i].dir_name;
         int length = strlen(dir_name);
-        if (dir_name[0] == '.' ||
+        if (dir_name[0]=='.' ||
             (dir_name[length - 2] == '.' && (dir_name[length - 1] == 'h' || dir_name[length - 1] == 'c'))) {
+            if (strcmp(".",dir_name)!=0) {
             (number_of_dirs)--;
             for (int j = i; j < number_of_dirs; j++) {
                 directories[j] = directories[j + 1];
             }
             i--;
+            }
         }
     }
 }

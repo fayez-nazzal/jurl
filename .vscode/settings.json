@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "unistd.h": "c",
+        "window_size.h": "c",
+        "command_window.h": "c",
+        ".C=.C=.C=.C": "cpp",
+        ".C": "cpp",
+        "date_time.h": "c",
+        "main_window.h": "c",
+        "time.h": "c",
+        "fcntl.h": "c",
+        "strings.h": "c"
+    }
+}

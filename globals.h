@@ -11,5 +11,5 @@
 WINDOW *main_window;
 WINDOW *command_window;
 int number_of_rows, number_of_cols;
-unsigned long int jute_terminal_window;
+bool can_input;
 #endif
