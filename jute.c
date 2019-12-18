@@ -6,13 +6,16 @@
 #include "command_window.h"
 #include "date_time.h"
 #include "input.h"
+#define KDE
+#include <pthread.h>
 #include "main_window.h"
+#include "track_mouse.h"
 #include "colors.h"
 
 int main() {
     /* print the title */
     printf("\033]0; Jute \007");
-
+    get_window_num(&jute_terminal_window);
     initscr();
     raw();
     noecho();
@@ -27,7 +30,10 @@ int main() {
 
     init_main_window();
     init_command_window();
-
+    #ifdef KDE
+    pthread_t thread_id;
+    pthread_create(&thread_id, NULL, mouse_thread, NULL);
+    #endif
     if (has_colors() && can_change_color()) {
         show_command_window();
         command_window_show_directories();
