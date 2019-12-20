@@ -1,6 +1,6 @@
 #include <ncurses.h>
+#include <stdarg.h>
 #include "globals.h"
-
 void init_colors() {
     start_color();
     init_color(MODERN_BLACK, 56, 57, 58);

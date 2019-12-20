@@ -9,6 +9,9 @@
         "main_window.h": "c",
         "time.h": "c",
         "fcntl.h": "c",
-        "strings.h": "c"
+        "strings.h": "c",
+        "stdio.h": "c",
+        "arraylist.h": "c",
+        "globals.h": "c"
     }
 }

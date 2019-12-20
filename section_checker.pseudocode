@@ -1,0 +1,8 @@
+function dir_checker:
+    switch dir_name:
+    "show section":
+        open_window(current_section_name, NULL)
+    .has(".juo"/".juta"/".jujou"/".judia"):
+        open_window(current_section_name, filename)
+    else
+        cerr(ERROR)
